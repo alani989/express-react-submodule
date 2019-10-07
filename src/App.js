@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import axios from 'axios'
 
-function App() {
+const App = () => {
+
+  const [welcome, setWelcome] = useState('')
+
+  useEffect(() => {
+    httpGet()
+  },[])
+
+  const httpGet = () => {
+    axios.get('/api/greeting')
+    .then(res => {
+      const { data } = res
+      setWelcome(data.greeting)
+    }).catch(err => {
+      console.log('err', err)
+      setWelcome('There was an error, please try again later or contact your admin')
+    })
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>{welcome}</h1>
     </div>
   );
 }
